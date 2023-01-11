@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using QuizGame.Database;
+using QuizGame.Services.Abstracts;
+using QuizGame.Services.Concretes;
 
 namespace QuizGame
 {
@@ -27,6 +29,7 @@ namespace QuizGame
                 app.UseHsts();
             }
 
+         
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -36,7 +39,7 @@ namespace QuizGame
 
             app.MapControllerRoute(
              name: "default",
-             pattern: "{area=exists}/{controller=home}/{action=index}");
+             pattern: "{area=exists}/{controller}/{action}");
 
             app.MapRazorPages();
 
