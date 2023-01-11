@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizGame.Database.Models;
 
 namespace QuizGame.Database
 {
@@ -9,5 +10,7 @@ namespace QuizGame.Database
         {
 
         }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Answer> Answers { get; set; }
     }
 }
