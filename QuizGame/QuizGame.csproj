@@ -22,4 +22,12 @@
     <PackageReference Include="MimeKit" Version="3.4.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Client\Controllers\" />
+    <Folder Include="Areas\Client\ViewModels\" />
+    <Folder Include="Areas\Client\Views\Shared\" />
+    <Folder Include="Database\Models\" />
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
