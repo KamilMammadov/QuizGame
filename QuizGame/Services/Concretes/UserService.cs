@@ -56,7 +56,7 @@ namespace QuizGame.Services.Concretes
 
         public string GetCurrentUserFullName()
         {
-            return $"{CurrentUser.FirstName} {CurrentUser.LastName} {CurrentUser.TotalPoint}";
+            return $"{CurrentUser.FirstName} {CurrentUser.LastName} ";
         }
 
         public async Task<bool> CheckPasswordAsync(string? email, string? password)

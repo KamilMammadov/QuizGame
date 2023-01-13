@@ -13,12 +13,13 @@ namespace QuizGame.Areas.Client.Controllers
     public class HomeController : Controller
     {
         private readonly DataContext _dbContext;
+        private readonly IUserService _currentUser;
         private static int _currentCount=7;
 
-        public HomeController(DataContext dbContext)
+        public HomeController(DataContext dbContext, IUserService userService)
         {
             _dbContext = dbContext;
-         
+            _currentUser=userService;
 
 
         }
@@ -32,7 +33,11 @@ namespace QuizGame.Areas.Client.Controllers
         [HttpGet("question", Name = "client-home-question")]
         public IActionResult Question()
         {
-            var ss= _dbContext.Questions.First();
+
+            if (!_currentUser.IsAuthenticated)
+            {
+                return RedirectToRoute("client-home-index");
+            }
 
             _currentCount++;
             var question = _dbContext.Questions.FirstOrDefault(q => q.Id == _currentCount);
@@ -47,6 +52,7 @@ namespace QuizGame.Areas.Client.Controllers
                 Answers = _dbContext.Answers.Where(a => a.QuestionId == question.Id)
                 .Select(a => new Answer(a.Id, a.Title, a.Status))
                 .ToList(),
+                TotalPoint=_currentUser.CurrentUser.TotalPoint,
                
             };
             return View(newmodel);
@@ -59,9 +65,14 @@ namespace QuizGame.Areas.Client.Controllers
 
             if (answer is null) return NotFound();
 
+
+            var user = _dbContext.Users.FirstOrDefault(c=>c.Id==_currentUser.CurrentUser.Id);
             if (answer.Status)
             {
+                
+                user.TotalPoint += 5;
 
+                _dbContext.SaveChanges();
             }
 
             var question = _dbContext.Questions.FirstOrDefault(q => q.Id == answer.QuestionId);
@@ -77,6 +88,7 @@ namespace QuizGame.Areas.Client.Controllers
                 .Select(a => new Answer(a.Id, a.Title, a.Status))
                 .ToList(),
                 IsAnswered = true,
+                TotalPoint=user.TotalPoint
 
             };
             

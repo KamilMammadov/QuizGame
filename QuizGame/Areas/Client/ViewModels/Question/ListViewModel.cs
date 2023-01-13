@@ -8,6 +8,7 @@ namespace QuizGame.Areas.Client.ViewModels.Question
         public string Tittle { get; set; }
         public List<Answer> Answers { get; set; }
         public bool IsAnswered { get; set; }
+        public int TotalPoint { get; set; }
 
     }
 }

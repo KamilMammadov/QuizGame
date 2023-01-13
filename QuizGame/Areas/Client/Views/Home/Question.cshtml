@@ -4,7 +4,7 @@
 @inject IUserService userService;
 
 								<a asp-route="client-account-dashboard">
-                                                @userService.GetCurrentUserFullName()
+                                                @userService.GetCurrentUserFullName() @Model.TotalPoint
                                             </a>
 		
 			@*<img src="~/@Model.ImageNameInFileSystem" alt="">
