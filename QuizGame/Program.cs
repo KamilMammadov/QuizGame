@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using QuizGame.Database;
 using QuizGame.Services.Abstracts;
@@ -19,6 +20,22 @@ namespace QuizGame
                 o.UseSqlServer(builder.Configuration.GetConnectionString("KamilPC"));
             });
 
+
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(o =>
+                {
+                    o.Cookie.Name = "Identity";
+                    o.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+                    o.LoginPath = "/auth/login";
+                    o.AccessDeniedPath = "/admin/auth/login";
+                });
+
+            builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddHttpContextAccessor();
+
+         
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -35,6 +52,7 @@ namespace QuizGame
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
