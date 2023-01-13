@@ -19,13 +19,14 @@
 								@foreach (var answer in Model.Answers)
 								{
 									if (answer.Status)
-										{
+									{
 										<a style="color:#00861d">@answer.Title</a>
 
-										}
-										else{
-										<a style="color:#ff497c" as>@answer.Title</a>
-										}
+									}
+									else
+									{
+										<a style="color:#ff498c" as>@answer.Title</a>
+									}
 
 								}
 							}

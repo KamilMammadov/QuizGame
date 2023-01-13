@@ -32,6 +32,8 @@ namespace QuizGame.Areas.Client.Controllers
         [HttpGet("question", Name = "client-home-question")]
         public IActionResult Question()
         {
+            var ss= _dbContext.Questions.First();
+
             _currentCount++;
             var question = _dbContext.Questions.FirstOrDefault(q => q.Id == _currentCount);
             if (question is null)
@@ -79,7 +81,7 @@ namespace QuizGame.Areas.Client.Controllers
             };
             
             return View(newmodel);
-        }
+       }
 
     }
 }

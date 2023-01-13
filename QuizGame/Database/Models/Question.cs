@@ -8,6 +8,7 @@ namespace QuizGame.Database.Models
         public List<Answer> Answers { get; set; }
 
         public string ImageName { get; set; } 
-        public string ImageNameInFileSystem { get; set; } 
+        public string ImageNameInFileSystem { get; set; }
+        //public DateTime CreatedAt { get; set; }
     }
 }
