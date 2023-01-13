@@ -1,5 +1,5 @@
-﻿@using QuizGame.Database.Models
-@model Question
+﻿@using QuizGame.Areas.Client.ViewModels.Question
+@model ListViewModel
 
 
 		
@@ -10,29 +10,45 @@
                                     </a>
 								</div>*@
 			<div class="container mt-sm-5 my-1">
-		<form method="POST" asp-route="client-home-question">
+				
 					<div class="question ml-sm-5 pl-sm-5 pt-2">
 						<div class="py-2 h5"><b>@Model.Tittle</b></div>
 						<div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-							@foreach(var answer in Model.Answers)
+							@if (Model.IsAnswered)
 							{
-					<form method="POST" asp-route="client-home-question" asp-route-id="@answer.Id" id="question-form-@answer.Id"></form>
-					<button type="submit" form="question-form-@answer.Id">
-								@answer.Title aaaaa
-								</button>
+								@foreach (var answer in Model.Answers)
+								{
+									if (answer.Status)
+										{
+										<a style="color:#00861d">@answer.Title</a>
+
+										}
+										else{
+										<a style="color:#ff497c" as>@answer.Title</a>
+										}
+
+								}
+							}
+							else
+							{
+									@foreach (var answer in Model.Answers)
+									{
+										<a asp-route="client-home-question-answer" asp-route-id="@answer.Id">@answer.Title</a>
+
+									}
+							}
 
 							
-							
-							}
+								
 						</div>
 					</div>
-				</form>
+			
 				<div class="d-flex align-items-center pt-3">
 					<div id="prev">
-						<button class="btn btn-primary">Previous</button>
+						<button  class="btn btn-primary">Previous</button>
 					</div>
 					<div class="ml-auto mr-sm-5">
-						<button class="btn btn-success">Next</button>
+			<a asp-route="client-home-question" class="btn btn-success">Next</a>
 					</div>
 				</div>
 			</div>

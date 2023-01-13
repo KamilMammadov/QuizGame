@@ -1,18 +1,13 @@
 ﻿using QuizGame.Database.Models;
 
-namespace QuizGame.Areas.Client.ViewModels.Home
+namespace QuizGame.Areas.Client.ViewModels.Question
 {
-    public class ListViewModel
-    {
-        public ListViewModel(int id, string title, bool status)
-        {
-            Id = id;
-            Title = title;
-            Status = status;
-        }
-
+	public class ListViewModel
+	{
         public int Id { get; set; }
-        public string Title { get; set; }
-        public bool Status { get; set; }
+        public string Tittle { get; set; }
+        public List<Answer> Answers { get; set; }
+        public bool IsAnswered { get; set; }
+
     }
 }

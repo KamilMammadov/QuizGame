@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuizGame.Areas.Client.ViewModels.Home;
+using QuizGame.Areas.Client.ViewModels.Question;
 using QuizGame.Contracts.File;
 using QuizGame.Database;
 using QuizGame.Database.Models;
@@ -11,11 +13,14 @@ namespace QuizGame.Areas.Client.Controllers
     public class HomeController : Controller
     {
         private readonly DataContext _dbContext;
+        private static int _currentCount=7;
 
         public HomeController(DataContext dbContext)
         {
             _dbContext = dbContext;
-          
+         
+
+
         }
         [HttpGet("/", Name = "client-home-index")]
         [HttpGet("index")]
@@ -27,12 +32,13 @@ namespace QuizGame.Areas.Client.Controllers
         [HttpGet("question", Name = "client-home-question")]
         public IActionResult Question()
         {
-            var question = _dbContext.Questions.FirstOrDefault(q => q.Id == 1);
+            _currentCount++;
+            var question = _dbContext.Questions.FirstOrDefault(q => q.Id == _currentCount);
             if (question is null)
             {
                 return NotFound();
             }
-            var newmodel = new Question
+            var newmodel = new ListViewModel
             {
                 Id = question.Id,
                 Tittle = question.Tittle,
@@ -43,15 +49,36 @@ namespace QuizGame.Areas.Client.Controllers
             };
             return View(newmodel);
         }
-        [HttpPost("question",Name ="client-home-question")]
+        [HttpGet("answer",Name ="client-home-question-answer")]
         public IActionResult Question(int id)
         {
-            var answer = _dbContext.Answers.FirstOrDefault(a => a.Id == id);
+            
+            var answer= _dbContext.Answers.FirstOrDefault(a => a.Id == id);
+
+            if (answer is null) return NotFound();
+
             if (answer.Status)
             {
-                return Ok();
+
             }
-            return View();
+
+            var question = _dbContext.Questions.FirstOrDefault(q => q.Id == answer.QuestionId);
+            if (question is null)
+            {
+                return NotFound();
+            }
+            var newmodel = new ListViewModel
+            {
+                Id = question.Id,
+                Tittle = question.Tittle,
+                Answers = _dbContext.Answers.Where(a => a.QuestionId == question.Id)
+                .Select(a => new Answer(a.Id, a.Title, a.Status))
+                .ToList(),
+                IsAnswered = true,
+
+            };
+            
+            return View(newmodel);
         }
 
     }
